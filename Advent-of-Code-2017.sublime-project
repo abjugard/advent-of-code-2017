@@ -1,0 +1,27 @@
+{
+  "folders":
+  [
+    {
+      "path": "data",
+      "name": "Puzzle data"
+    },
+    {
+      "path": "src",
+      "name": "Source code",
+      "file_exclude_patterns": ["*.pyc"]
+    }
+  ],
+    "build_systems":
+    [
+      {
+        "name": "Python 3",
+        "shell_cmd": "python3 -OO -u \"$file\"",
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+        "selector": "source.python.3",
+        "windows":
+        {
+          "shell_cmd": "python3 -OO -u \"$file\""
+        }
+      }
+    ]
+}
