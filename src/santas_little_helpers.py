@@ -30,7 +30,7 @@ def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
     aoc_data.mkdir()
 
   def save_daily_input(today: date) -> None:
-    url = f'http://adventofcode.com/{today.year}/day/{today.day}/input'
+    url = f'https://adventofcode.com/{today.year}/day/{today.day}/input'
     res = request('GET', url, cookies=config)
     res.raise_for_status()
     with file_path.open('wb') as f:
