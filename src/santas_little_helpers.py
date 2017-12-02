@@ -1,4 +1,5 @@
 import json, re, time
+from bs4 import BeautifulSoup
 from datetime import date, datetime
 from pathlib import Path
 from requests import request
@@ -47,6 +48,17 @@ def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
   with file_path.open() as f:
     for line in f.readlines():
       yield format_line(line, ops)
+
+def submit_answer(today: date, answer: str, level: int = 1) -> None:
+  url = f'http://adventofcode.com/{today.year}/day/{today.day}/answer'
+  payload = {
+    'level': level,
+    'answer': answer
+  }
+  res = request('POST', url, data=payload, cookies=config)
+  soup = BeautifulSoup(res.content, 'html.parser')
+  for content in soup.find_all('article'):
+    print(content.text)
 
 def time_fmt(delta: float) -> (float, str):
   if delta < 1e-6:
