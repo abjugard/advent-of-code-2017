@@ -7,12 +7,14 @@
     {
       "path": "src",
       "name": "Source code",
-      "file_exclude_patterns": ["*.pyc", "__pycache__"]
+      "file_exclude_patterns": ["*.pyc"],
+      "folder_exclude_patterns": ["__pycache__"]
     }
   ],
   "build_systems": [
     {
       "name": "Python 3",
+      "env": {"PYTHONIOENCODING": "utf8"},
       "shell_cmd": "python3 -OO -u \"$file\"",
       "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
       "selector": "source.python.3",
