@@ -1,18 +1,21 @@
-import re, json
+import json, re, time
+from datetime import date, datetime
 from pathlib import Path
 from requests import request
-from datetime import date, datetime
+from typing import Callable, Iterator
 
 base_ops = [('replace', (r'\n', ''))]
 
 aoc_root = Path('../')
 aoc_data = aoc_root / 'data'
-aoc_src = aoc_root / 'src'
 
 with open(aoc_root / 'config.json', 'r') as f:
   config = json.load(f)
 
-def format_line(line, ops) -> str:
+def day(year: int, theday: int) -> date:
+  return date(year, 12, theday)
+
+def format_line(line: str, ops: list):
   for op, args in ops:
     if op == 'replace':
       line = re.sub(args[0], args[1], line)
@@ -20,16 +23,13 @@ def format_line(line, ops) -> str:
       line = line.split(args)
     if op == 'func':
       line = args(line)
-  return(line)
+  return line
 
-def day(year, theday) -> datetime:
-  return datetime(year, 12, theday)
-
-def get_data(today=date.today(), ops=base_ops) -> str:
+def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
   if not aoc_data.exists():
     aoc_data.mkdir()
 
-  def save_daily_input(today):
+  def save_daily_input(today: date) -> None:
     url = f'http://adventofcode.com/{today.year}/day/{today.day}/input'
     res = request('GET', url, cookies=config)
     res.raise_for_status()
@@ -37,7 +37,7 @@ def get_data(today=date.today(), ops=base_ops) -> str:
       for chunk in res.iter_content(chunk_size=128):
         f.write(chunk)
         print(chunk.decode('utf-8'), end='')
-    print()
+      print()
 
   file_path = aoc_data / f'day{today.day:02}.txt'
   if not file_path.exists():
@@ -46,6 +46,20 @@ def get_data(today=date.today(), ops=base_ops) -> str:
   data = []
   with file_path.open() as f:
     for line in f.readlines():
-      line = format_line(line, ops)
-      data.append(line)
-  return(data)
+      yield format_line(line, ops)
+
+def time_fmt(delta: float) -> (float, str):
+  if delta < 1e-6:
+    return 1e9, 'ns'
+  elif delta < 1e-3:
+    return 1e6, 'µs'
+  elif delta < 1:
+    return 1e3, 'ms'
+  return 1, 'seconds'
+
+def timed(func: Callable) -> None:
+  start = time.time()
+  func()
+  delta = time.time()-start
+  multiplier, unit = time_fmt(delta)
+  print(f'--- {delta*multiplier:.2f} {unit} ---')

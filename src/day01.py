@@ -1,13 +1,17 @@
-from santas_little_helpers import *
+from santas_little_helpers import day, get_data, timed
 
-def solve_puzzle(arr, offset) -> int:
-  for i in range(0, len(arr)):
-    if arr[i] == arr[(i+offset) % len(arr)]:
-      yield int(arr[i])
+today = day(2017, 1)
+
+def inverse_captcha(captcha: list, offset: int = 1) -> [int]:
+  for i, val in enumerate(captcha):
+    if val == captcha[(i+offset) % len(captcha)]:
+      yield int(val)
+
+def main() -> None:
+  data = list(get_data(today))[0]
+
+  print(f'{today} star 1 = {sum(inverse_captcha(data))}')
+  print(f'{today} star 2 = {sum(inverse_captcha(data, len(data)//2))}')
 
 if __name__ == '__main__':
-  data = get_data(day(2017, 1), base_ops + [])[0]
-
-  print(f'The value for star 1 = {sum(solve_puzzle(data, 1))}')
-  offset = int(len(data)/2)
-  print(f'The value for star 2 = {sum(solve_puzzle(data, offset))}')
+  timed(main)
