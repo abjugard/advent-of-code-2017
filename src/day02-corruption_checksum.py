@@ -9,9 +9,9 @@ def spreadsheet_combinations(inp: list) -> Iterator[tuple]:
 
 def find_even_div(inp: list) -> int:
   for x, l in spreadsheet_combinations(inp):
-    for qr in [divmod(y, x) for y in l]:
-      if qr[1] == 0:
-        return qr[0]
+    for quotient, remainder in [divmod(y, x) for y in l]:
+      if remainder == 0:
+        return quotient
 
 def fmt(l: list) -> list:
   return sorted([int(s) for s in l])
