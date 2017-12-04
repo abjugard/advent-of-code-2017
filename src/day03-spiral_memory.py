@@ -1,6 +1,6 @@
-# from santas_little_helpers import base_ops, day, get_data, timed
-from santas_little_helpers import *
+from santas_little_helpers import day, get_data, timed
 from enum import Enum
+from typing import Type
 
 today = day(2017, 3)
 
@@ -10,7 +10,7 @@ class Direction(Enum):
   SOUTH = ('y', -1)
   EAST = ('x', 1)
 
-  def __init__(self, axis, diff):
+  def __init__(self, axis: str, diff: int):
     self.axis = axis
     self.diff = diff
 
@@ -25,7 +25,7 @@ adjacency_values = {(0,0):1}
 adjacency_matrix = [(-1, 1), (0, 1), (1, 1),
                     (-1, 0),         (1, 0),
                     (-1,-1), (0,-1), (1,-1)]
-def adjacent_value(x, y):
+def adjacent_value(x: int, y: int):
   global star2
   if star2:
     return
@@ -38,7 +38,7 @@ def adjacent_value(x, y):
   else:
     adjacency_values[(x,y)] = val
 
-def move(side_length, direction):
+def move(side_length: int, direction: Type[Direction]) -> None:
   global step, x, y, star1
   if step + side_length < target:
     if not star2:
@@ -63,7 +63,7 @@ def move(side_length, direction):
       else:
         y += direction.diff
 
-def main():
+def main() -> None:
   global target, x, y
   target = int(list(get_data(today))[0])
   side_length = 2
