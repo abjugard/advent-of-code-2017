@@ -1,0 +1,26 @@
+from santas_little_helpers import *
+
+today = day(2017, 5)
+
+def maze(data, decrement=False):
+  index = 0
+  steps = 0
+  instructions = len(data)
+  while index < instructions:
+    offset = data[index]
+    if decrement and offset >= 3:
+      data[index] -= 1
+    else:
+      data[index] += 1
+    index += offset
+    steps += 1
+  return steps
+
+def main():
+  data = list(get_data(today, [('func', int)]))
+
+  print(f'{today} star 1 = {maze(data.copy())}')
+  print(f'{today} star 2 = {maze(data, decrement=True)}')
+
+if __name__ == '__main__':
+  timed(main)
