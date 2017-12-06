@@ -10,7 +10,7 @@ base_ops = [('replace', (r'\n', ''))]
 aoc_root = Path('../')
 aoc_data = aoc_root / 'data'
 
-with open(aoc_root / 'config.json', 'r') as f:
+with (aoc_root / 'config.json').open('r') as f:
   config = json.load(f)
 
 def day(year: int, theday: int) -> date:
