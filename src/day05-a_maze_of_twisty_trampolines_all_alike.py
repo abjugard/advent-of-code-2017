@@ -2,7 +2,7 @@ from santas_little_helpers import *
 
 today = day(2017, 5)
 
-def maze(data, decrement=False):
+def maze(data: [int], decrement: bool = False) -> int:
   index = 0
   steps = 0
   instructions = len(data)
@@ -16,7 +16,7 @@ def maze(data, decrement=False):
     steps += 1
   return steps
 
-def main():
+def main() -> None:
   data = list(get_data(today, [('func', int)]))
 
   print(f'{today} star 1 = {maze(data.copy())}')
