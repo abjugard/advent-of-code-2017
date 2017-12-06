@@ -2,30 +2,28 @@ from santas_little_helpers import *
 
 today = day(2017, 6)
 
-def redistribute(data: [int], mem_banks: int = 16) -> [int]:
-  i = data.index(max(data))
-  val = data[i]
-  data[i] = 0
+def redistribute(page: list, page_size: int = 16) -> tuple:
+  i = page.index(max(page))
+  val = page[i]
+  page[i] = 0
   for idx in range(i, i+val):
-    data[(idx+1) % mem_banks] += 1
-  return data
+    page[(idx+1) % page_size] += 1
+  return tuple(page)
 
-def reallocate(data: [int]) -> (int, [int]):
-  results = set([str(data)])
-  prev = None
-  while len(results) != prev:
-    data = redistribute(data)
-    prev = len(results)
-    results.add(str(data))
-  return len(results), data
+def reallocate(page: tuple) -> (int, int):
+  seen = {}
+  count = 0
+  while page not in seen:
+    seen[page] = count
+    page = redistribute(list(page))
+    count += 1
+  return count, count-seen[page]
 
 def main() -> None:
-  data = get_data(today, [('split', '\t'), ('func_each', int)])
-
-  data = list(data)[0]
-  star1, data = reallocate(data)
+  data = next(get_data(today, [('split', '\t'), ('map', int)]))
+  star1, star2 = reallocate(tuple(data))
   print(f'{today} star 1 = {star1}')
-  print(f'{today} star 2 = {reallocate(data)[0]}')
+  print(f'{today} star 2 = {star2}')
 
 if __name__ == '__main__':
   timed(main)
