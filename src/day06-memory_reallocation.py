@@ -12,12 +12,10 @@ def redistribute(page: list, page_size: int = 16) -> tuple:
 
 def reallocate(page: tuple) -> (int, int):
   seen = {}
-  count = 0
   while page not in seen:
-    seen[page] = count
+    seen[page] = len(seen)
     page = redistribute(list(page))
-    count += 1
-  return count, count-seen[page]
+  return len(seen), len(seen)-seen[page]
 
 def main() -> None:
   data = next(get_data(today, [('split', '\t'), ('map', int)]))
