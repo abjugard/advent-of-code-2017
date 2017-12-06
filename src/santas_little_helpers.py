@@ -24,6 +24,8 @@ def format_line(line: str, ops: list):
       line = line.split(args)
     if op == 'func':
       line = args(line)
+    if op == 'func_each':
+      line = [args(x) for x in line]
   return line
 
 def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
