@@ -1,4 +1,4 @@
-from santas_little_helpers import *
+from santas_little_helpers import base_ops, day, get_data, timed
 from collections import defaultdict
 
 today = day(2017, 11)
