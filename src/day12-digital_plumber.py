@@ -1,6 +1,6 @@
-from santas_little_helpers import *
+from santas_little_helpers import day, get_data, timed
 from collections import defaultdict
-import networkx
+import networkx, re
 
 today = day(2017, 12)
 rx = re.compile(r'([\d]*) <-> ([\w, ]*)')
@@ -19,7 +19,7 @@ def fun(line: str) -> (int, [int]):
   return int(m.group(1)), [int(x) for x in m.group(2).split(', ')]
 
 def main() -> None:
-  data = get_data(today, base_ops + [('func', fun)])
+  data = get_data(today, [('func', fun)])
   star1, star2 = graph(data)
   print(f'{today} star 1 = {star1}')
   print(f'{today} star 2 = {star2}')

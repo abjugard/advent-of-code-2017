@@ -1,4 +1,4 @@
-from santas_little_helpers import *
+from santas_little_helpers import day, get_data, timed
 
 today = day(2017, 13)
 
@@ -22,7 +22,7 @@ def fun(line: str) -> [int]:
   return [int(i) for i in line]
 
 def main() -> None:
-  data = get_data(today, base_ops + [('split', ': '), ('func', fun)])
+  data = get_data(today, [('split', ': '), ('func', fun)])
   star1, star2 = waiting_time(list(data))
   print(f'{today} star 1 = {star1}')
   print(f'{today} star 2 = {star2}')
