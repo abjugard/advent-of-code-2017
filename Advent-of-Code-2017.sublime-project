@@ -1,14 +1,14 @@
 {
   "folders": [
     {
-      "path": "data",
-      "name": "Puzzle data"
-    },
-    {
       "path": "src",
       "name": "Source code",
       "file_exclude_patterns": ["*.pyc"],
       "folder_exclude_patterns": ["__pycache__"]
+    },
+    {
+      "path": "data",
+      "name": "Puzzle data"
     }
   ],
   "build_systems": [
@@ -17,14 +17,11 @@
       "env": {"PYTHONIOENCODING": "utf8"},
       "shell_cmd": "python3 -OO -u \"$file\"",
       "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-      "selector": "source.python.3",
+      "selector": "source.python",
       "windows":
       {
         "shell_cmd": "python3 -OO -u \"$file\""
       }
     }
-  ],
-  "syntax_override": {
-    "\\.py$": ["MagicPython", "grammars", "MagicPython"]
-  }
+  ]
 }
