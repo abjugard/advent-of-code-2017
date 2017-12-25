@@ -18,15 +18,32 @@ def day(year: int, theday: int) -> date:
 
 def format_line(line: str, ops: list):
   for op, args in ops:
-    if op == 'replace':
-      line = re.sub(args[0], args[1], line)
-    if op == 'split':
-      line = line.split(args)
-    if op == 'func':
+    if op == 'asmbunny':
+      line = asmbunny_setup(args, line)
+    elif op == 'func':
       line = args(line)
-    if op == 'map':
+    elif op == 'map':
       line = map(args, line)
+    elif op == 'replace':
+      line = re.sub(args[0], args[1], line)
+    elif op == 'split':
+      line = line.split(args)
   return line
+
+def asmbunny_setup(instrs: {}, line: str) -> (Callable, tuple):
+  instr, *raw = line.strip().split(' ')
+  if instr not in instrs:
+    exit(1)
+  args = ()
+  for arg in raw:
+    try:
+      arg = int(arg)
+    except:
+      pass
+    args += arg,
+  if len(args) == 1:
+    args = args[0]
+  return instrs[instr], args
 
 def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
   if not aoc_data.exists():
@@ -46,7 +63,6 @@ def get_data(today: date = date.today(), ops: list = base_ops) -> Iterator:
   if not file_path.exists():
     print(f'Data for day {today.day} not available, downloading!')
     save_daily_input(today)
-  data = []
   with file_path.open() as f:
     for line in f.readlines():
       yield format_line(line, ops)

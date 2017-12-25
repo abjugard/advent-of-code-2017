@@ -6,7 +6,7 @@ regs = []
 
 today = day(2017, 18)
 
-def snd(p:int, val: int, threads: int) -> int:
+def snd(p: int, val: int, threads: int) -> int:
   if val in regs[p]:
     val = regs[p][val]
   if threads == 1:
@@ -49,12 +49,10 @@ def rcv(p: int, reg: str, threads: int) -> int:
     if regs[p][reg] != 0:
       regs[p][reg] = regs[p]['snd']
     return 1
-  else:
-    if len(regs[p]['rcv']) > 0:
-      regs[p][reg], *regs[p]['rcv'] = regs[p]['rcv']
-      return 1
-    else:
-      return 0
+  elif len(regs[p]['rcv']) > 0:
+    regs[p][reg], *regs[p]['rcv'] = regs[p]['rcv']
+    return 1
+  return 0
 
 def jgz(p: int, args: tuple, _) -> int:
   cond, jmp = args
@@ -66,30 +64,10 @@ def jgz(p: int, args: tuple, _) -> int:
     return jmp
   return 1
 
-def setup(line: str) -> (Callable, tuple):
-  instrs = {
-    'snd': snd, 'set': put, 'add': add, 
-    'mul': mul, 'mod': mod, 'rcv': rcv, 
-    'jgz': jgz
-  }
-  instr, *raw = line.strip().split(' ')
-  args = ()
-  for arg in raw:
-    try:
-      arg = int(arg)
-    except Exception:
-      pass
-    args += arg,
-  if len(args) == 1:
-    args = args[0]
-  return instrs[instr], args
-
 def waiting(p: int, pc: int, stack: [(Callable, tuple)]) -> bool:
   if pc < 0 or pc >= len(stack):
     return True
-  if stack[pc][0] == rcv and len(regs[p]['rcv']) < 1:
-    return True
-  return False
+  return stack[pc][0] == rcv and len(regs[p]['rcv']) < 1
 
 def reset(threads: int) -> [int]:
   global regs
@@ -114,7 +92,12 @@ def run(stack: [(Callable, tuple)], threads: int = 1) -> int:
   return regs[1%threads]['snd']
 
 def main() -> None:
-  stack = list(get_data(today, [('func', setup)]))
+  instrs = {
+    'snd': snd, 'set': put, 'add': add,
+    'mul': mul, 'mod': mod, 'rcv': rcv,
+    'jgz': jgz
+  }
+  stack = list(get_data(today, [('asmbunny', instrs)]))
   print(f'{today} star 1 = {run(stack)}')
   print(f'{today} star 2 = {run(stack, threads=2)}')
 
