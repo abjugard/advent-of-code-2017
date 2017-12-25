@@ -1,4 +1,4 @@
-import json, re, time
+import json, re, time, importlib
 from bs4 import BeautifulSoup
 from datetime import date, datetime
 from pathlib import Path
@@ -77,3 +77,13 @@ def timed(func: Callable) -> None:
   delta = time.time()-start
   multiplier, unit = time_fmt(delta)
   print(f'--- {delta*multiplier:.2f} {unit} ---')
+
+def run_all():
+  for file in sorted(Path('.').glob('day*-*.py')):
+    print(f'Running \'{file.name}\':')
+    day = importlib.import_module(file.name[:-3])
+    timed(day.main)
+    print()
+
+if __name__ == '__main__':
+  timed(run_all)
