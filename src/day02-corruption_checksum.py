@@ -1,5 +1,5 @@
-from typing import Iterator
 from santas_little_helpers import day, get_data, timed
+from typing import Iterator
 
 today = day(2017, 2)
 

@@ -1,17 +1,16 @@
 from santas_little_helpers import day, get_data, timed
-from collections import defaultdict
-import networkx, re
+import networkx as nx, re
 
 today = day(2017, 12)
 rx = re.compile(r'([\d]*) <-> ([\w, ]*)')
 
 def graph(data: [(int, [int])]) -> (int, int):
-  graph = networkx.Graph()
+  g = nx.Graph()
   for x, l in data:
-    graph.add_edges_from((x, n) for n in l)
+    g.add_edges_from((x, n) for n in l)
 
-  star1 = len(networkx.node_connected_component(graph, 0))
-  star2 = networkx.number_connected_components(graph)
+  star1 = len(nx.node_connected_component(g, 0))
+  star2 = nx.number_connected_components(g)
   return star1, star2
 
 def fun(line: str) -> (int, [int]):

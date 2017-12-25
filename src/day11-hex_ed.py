@@ -1,5 +1,4 @@
 from santas_little_helpers import base_ops, day, get_data, timed
-from collections import defaultdict
 
 today = day(2017, 11)
 
@@ -28,7 +27,7 @@ def hex_walk(data: [str]) -> (int, int):
   return dist, maximum
 
 def main() -> None:
-  data = get_data(today, base_ops + [('split',',')])
+  data = get_data(today, base_ops + [('split', ',')])
   star1, star2 = hex_walk(next(data))
   print(f'{today} star 1 = {star1}')
   print(f'{today} star 2 = {star2}')
