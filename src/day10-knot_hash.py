@@ -1,19 +1,7 @@
 from santas_little_helpers import day, get_data, timed
+from knot_hash import arr_size, hex_representation, to_ascii
 
 today = day(2017, 10)
-arr_size = 256
-
-def to_ascii(data: str) -> [int]:
-  return [ord(x) for x in data]+[17, 31, 73, 47, 23]
-
-def hex_representation(l: [int]) -> str:
-  hex_list = []
-  for i in range(0, 16):
-    num, *rest = l[i*16:(i+1)*16]
-    for j in rest:
-      num ^= j
-    hex_list += [hex(num)]
-  return ''.join([h[2:4].zfill(2) for h in hex_list])
 
 def hash_data(lengths: [int], repeat: int = 1) -> [int]:
   l = list(range(arr_size))
