@@ -1,30 +1,7 @@
 from santas_little_helpers import base_ops, day, get_data, timed
-from enum import Enum
+from direction import Direction, ds
 
 today = day(2017, 22)
-
-class Direction(Enum):
-  NORTH = (0, -1, 'w', 'e', 's')
-  WEST = (-1, 0, 's', 'n', 'e')
-  SOUTH = (0, 1, 'e', 'w', 'n')
-  EAST = (1, 0, 'n', 's', 'w')
-
-  def __init__(self, x:int, y:int, left:str, right:str, back:str) -> None:
-    self.x = x
-    self.y = y
-    self.left = left
-    self.right = right
-    self.back = back
-
-  def __add__(self, t:tuple) -> (int, int):
-    return self.x+t[0], self.y+t[1]
-
-ds = {
-  'n': Direction.NORTH,
-  'e': Direction.EAST,
-  's': Direction.SOUTH,
-  'w': Direction.WEST
-}
 
 the_map = {}
 
@@ -55,10 +32,10 @@ def main() -> None:
   global the_map
   data = list(get_data(today, base_ops + [('func', list)]))
   reference = {}
-  for y in range(len(data)):
-    for x in range(len(data[0])):
-      the_map[(x, y)] = data[y][x]
-      reference[(x, y)] = data[y][x]
+  for y, row in enumerate(data):
+    for x, val in enumerate(row):
+      the_map[(x, y)] = val
+      reference[(x, y)] = val
   start_pos = len(data) // 2, len(data) // 2
   print(f'{today} star 1 = {infect(start_pos)}')
   the_map = reference
