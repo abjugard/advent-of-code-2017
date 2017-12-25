@@ -1,4 +1,4 @@
-from santas_little_helpers import *
+from santas_little_helpers import day, get_data, timed
 
 today = day(2017, 6)
 
